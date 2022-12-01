@@ -1,0 +1,28 @@
+#######################################
+# Syntax Coloring Map For Messenger
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+TheTimer
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+AddCallBack	KEYWORD2
+RemoveCallback	KEYWORD2
+GetInterval	KEYWORD2
+GetCallback	KEYWORD2
+ClearAllCallBacks	KEYWORD2
+GetNumCallbacks	KEYWORD2
+#######################################
+# Instances (KEYWORD2)
+#######################################
+MNTimerLib	KEYWORD2
+#######################################
+# Constants (LITERAL1)
+#######################################
+MAX_CALLBACKS	LITERAL1
+RESOLUTION	LITERAL1
