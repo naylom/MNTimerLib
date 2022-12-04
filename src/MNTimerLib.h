@@ -40,7 +40,7 @@ public:
 	void			CheckReady ( uint8_t iCallbackNum );
 	void 			IncTickCount();	
 protected:
-	CALLBACKDATA	m_Data [ MAX_CALLBACKS ];
-	uint8_t			m_uiCallbackCount;
-	uint32_t		m_ulTimerCount;
+	CALLBACKDATA		m_Data [ MAX_CALLBACKS ];
+	volatile uint8_t	m_uiCallbackCount;
+	uint32_t			m_ulTimerCount;
 };

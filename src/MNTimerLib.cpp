@@ -141,19 +141,22 @@ bool MNTimerClass::AddCallBack ( TimerCallback Routine, uint32_t ulInterval )
 bool MNTimerClass::AddCallBack ( MNTimerClass * pClass, aMemberFunction aMFunction, uint32_t ulInterval )
 {
 	bool bResult = false;
-
+	noInterrupts();
 	if ( m_uiCallbackCount < MAX_CALLBACKS )
 	{
 		// check callback not already registered
+
 		for ( uint8_t i = 0; i < m_uiCallbackCount; i++ )
 		{
 			// look for match
 			if ( m_Data [ i ].aMFunction == aMFunction && m_Data [ m_uiCallbackCount ].pClass == pClass )
 			{
 				// already here, so quit
+				interrupts();
 				return bResult;
 			}
 		}
+		
 		m_Data [ m_uiCallbackCount ].pClass = pClass;
 		m_Data [ m_uiCallbackCount ].aMFunction = aMFunction;
 		m_Data [ m_uiCallbackCount ].aFunction = nullptr;
@@ -163,6 +166,7 @@ bool MNTimerClass::AddCallBack ( MNTimerClass * pClass, aMemberFunction aMFuncti
 
 		bResult = true;
 	}
+	interrupts();	
 	return bResult;
 }
 
@@ -174,6 +178,7 @@ bool MNTimerClass::AddCallBack ( MNTimerClass * pClass, aMemberFunction aMFuncti
 bool MNTimerClass::RemoveCallBack ( TimerCallback Routine )
 {
 	bool bResult = false;
+	noInterrupts ();
 	for ( uint8_t i = 0 ; i < m_uiCallbackCount; i++ )
 	{
 		// look for match
@@ -181,14 +186,14 @@ bool MNTimerClass::RemoveCallBack ( TimerCallback Routine )
 		{
 			// match found
 			// overwrite with last entry
-			noInterrupts ();
+			
 			m_Data [ i ] = m_Data [ m_uiCallbackCount - 1];
 			m_uiCallbackCount--;
-			interrupts ();
 			bResult = true;
 			break;
 		}
 	}
+	interrupts ();	
 	return bResult;
 }
 /// <summary>
@@ -200,6 +205,7 @@ bool MNTimerClass::RemoveCallBack ( TimerCallback Routine )
 bool MNTimerClass::RemoveCallBack ( MNTimerClass * pClass, aMemberFunction aMFunction )
 {
 	bool bResult = false;
+	noInterrupts ();	
 	for ( uint8_t i = 0 ; i < m_uiCallbackCount; i++ )
 	{
 		// look for match
@@ -207,14 +213,17 @@ bool MNTimerClass::RemoveCallBack ( MNTimerClass * pClass, aMemberFunction aMFun
 		{
 			// match found
 			// overwrite with last entry
-			noInterrupts ();
+
 			m_Data [ i ] = m_Data [ m_uiCallbackCount - 1];
+			m_Data [ m_uiCallbackCount - 1 ].pClass = 0;
+			m_Data [ m_uiCallbackCount - 1 ].aFunction = 0;
 			m_uiCallbackCount--;
-			interrupts ();
+
 			bResult = true;
 			break;
 		}
 	}
+	interrupts ();	
 	return bResult;
 }
 
@@ -261,7 +270,6 @@ uint8_t MNTimerClass::GetNumCallbacks ( void )
 // common interrupt code called by either architecture
 void TimerInterruptCode ()
 {
-	//static uint32_t ulCount = 0;
 	uint8_t uiNumCallbacks = TheTimer.GetNumCallbacks ();
 	
 	TheTimer.IncTickCount();
