@@ -2,6 +2,8 @@
 // 
 // This implements a timer class that encapsulates a microsecond timer that has functions to call at given intervals. Its set to a resolution of 2000 ticks per sec
 //
+// Note on the SAMD code version pin A3 is used by this code and cannot be utilised by user
+//
 // (c) Mark Naylor June 2021
 // 
 #include "MNTimerLib.h"
@@ -42,7 +44,7 @@ MNTimerClass::MNTimerClass ( void )
 {
 	m_uiCallbackCount = 0;
 	m_ulTimerCount = 0UL;
-	PORT->Group [ PORTA ].DIRSET.reg = PORT_PA21;			// Set D7 as a digital output
+	PORT->Group [ PORTA ].DIRSET.reg = PORT_PA04;			// Set pin A3 as a digital output
 
   	GCLK->CLKCTRL.reg = GCLK_CLKCTRL_CLKEN |                // Enable GCLK0 for TC4 and TC5
                       	GCLK_CLKCTRL_GEN_GCLK0 |            // Select GCLK0 at 48MHz
