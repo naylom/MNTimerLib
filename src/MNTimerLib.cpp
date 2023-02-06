@@ -299,7 +299,7 @@ ISR ( TIMER2_COMPA_vect )
 void TC4_Handler()                                         // Interrupt Service Routine (ISR) for timer TC4
 {     
 	TimerInterruptCode(); 
-    PORT->Group[PORTA].OUTTGL.reg = PORT_PA04;             // Toggle the D7 output
+    PORT->Group[PORTA].OUTTGL.reg = PORT_PA04;             // Toggle the A3 output
     TC4->COUNT16.INTFLAG.reg = TC_INTFLAG_OVF;             // Clear the OVF interrupt flag
 }
 #endif
